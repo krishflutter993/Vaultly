@@ -20,14 +20,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
 
   final List<Map<String, dynamic>> defaultCategories = [
-    {"title": "Business", "icon": Icons.business_center_rounded, "color": Colors.blue},
-    {"title": "Computer Logins", "icon": Icons.computer_rounded, "color": Colors.deepPurple},
-    {"title": "Credit Cards", "icon": Icons.credit_card_rounded, "color": Colors.orange},
-    {"title": "Important Docs", "icon": Icons.description_rounded, "color": Colors.green},
-    {"title": "Private Photos", "icon": Icons.photo_library_rounded, "color": Colors.pink},
-    {"title": "Social Media", "icon": Icons.share_rounded, "color": Colors.lightBlue},
-    {"title": "Website Passwords", "icon": Icons.language_rounded, "color": Colors.teal},
-    {"title": "Drivers License", "icon": Icons.drive_eta_rounded, "color": Colors.amber},
+    {
+      "title": "Business",
+      "icon": Icons.business_center_rounded,
+      "color": Colors.blue,
+    },
+    {
+      "title": "Computer Logins",
+      "icon": Icons.computer_rounded,
+      "color": Colors.deepPurple,
+    },
+    {
+      "title": "Credit Cards",
+      "icon": Icons.credit_card_rounded,
+      "color": Colors.orange,
+    },
+    {
+      "title": "Important Docs",
+      "icon": Icons.description_rounded,
+      "color": Colors.green,
+    },
+    {
+      "title": "Private Photos",
+      "icon": Icons.photo_library_rounded,
+      "color": Colors.pink,
+    },
+    {
+      "title": "Social Media",
+      "icon": Icons.share_rounded,
+      "color": Colors.lightBlue,
+    },
+    {
+      "title": "Website Passwords",
+      "icon": Icons.language_rounded,
+      "color": Colors.teal,
+    },
+    {
+      "title": "Drivers License",
+      "icon": Icons.drive_eta_rounded,
+      "color": Colors.amber,
+    },
   ];
 
   List<Map<String, dynamic>> categories = [];
@@ -44,7 +76,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (user == null) return;
 
     try {
-      final doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      final doc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       if (doc.exists && doc.data() != null) {
         final data = doc.data()!;
 
@@ -53,7 +88,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           setState(() {
             for (var catTitle in customCats) {
               if (!categories.any((c) => c['title'] == catTitle)) {
-                categories.add({"title": catTitle, "icon": Icons.folder_special_rounded, "color": Colors.indigo});
+                categories.add({
+                  "title": catTitle,
+                  "icon": Icons.folder_special_rounded,
+                  "color": Colors.indigo,
+                });
               }
             }
           });
@@ -73,7 +112,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (user != null) {
       try {
         final customCats = categories
-            .where((c) => !defaultCategories.any((dc) => dc['title'] == c['title']))
+            .where(
+              (c) => !defaultCategories.any((dc) => dc['title'] == c['title']),
+            )
             .map((c) => c['title'])
             .toList();
 
@@ -95,7 +136,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Add Category',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(
+            context,
+          ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
         content: TextField(
           controller: catController,
@@ -108,7 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6))),
+            child: Text(
+              'Cancel',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+            ),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -116,18 +164,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
               if (title.isNotEmpty) {
                 if (!categories.any((c) => c['title'] == title)) {
                   setState(() {
-                    categories.add({"title": title, "icon": Icons.folder_special_rounded, "color": Colors.indigo});
+                    categories.add({
+                      "title": title,
+                      "icon": Icons.folder_special_rounded,
+                      "color": Colors.indigo,
+                    });
                   });
                   final user = FirebaseAuth.instance.currentUser;
                   if (user != null) {
                     try {
                       final customCats = categories
-                          .where((c) => !defaultCategories.any((dc) => dc['title'] == c['title']))
+                          .where(
+                            (c) => !defaultCategories.any(
+                              (dc) => dc['title'] == c['title'],
+                            ),
+                          )
                           .map((c) => c['title'])
                           .toList();
-                      await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-                        'customCategories': customCats,
-                      }, SetOptions(merge: true));
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .set({
+                            'customCategories': customCats,
+                          }, SetOptions(merge: true));
                     } catch (e) {
                       debugPrint("Error saving category: $e");
                     }
@@ -145,7 +204,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildVaultView() {
     final filtered = categories.where((item) {
-      return item["title"].toString().toLowerCase().contains(searchText.toLowerCase());
+      return item["title"].toString().toLowerCase().contains(
+        searchText.toLowerCase(),
+      );
     }).toList();
 
     return Column(
@@ -163,18 +224,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Text(
                     "Your Vault",
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.lock_outline, size: 14, color: Colors.teal),
+                      const Icon(
+                        Icons.lock_outline,
+                        size: 14,
+                        color: Colors.teal,
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         "End-to-End Encrypted",
                         style: TextStyle(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withOpacity(0.6),
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
@@ -189,7 +256,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
-                  icon: Icon(Icons.logout_rounded, color: Theme.of(context).colorScheme.primary),
+                  icon: Icon(
+                    Icons.logout_rounded,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () async {
                     await FirebaseAuth.instance.signOut();
                     if (context.mounted) {
@@ -198,7 +268,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         PageRouteBuilder(
                           pageBuilder: (_, __, ___) => LoginScreen(),
                           transitionsBuilder: (_, animation, __, child) {
-                            return FadeTransition(opacity: animation, child: child);
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
                           },
                         ),
                         (route) => false,
@@ -222,7 +295,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               });
             },
             decoration: InputDecoration(
-              hintText: "Search categories...",
+              hintText: "Search categories....",
               prefixIcon: const Icon(Icons.search_rounded),
               suffixIcon: searchText.isNotEmpty
                   ? IconButton(
@@ -246,7 +319,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             itemCount: filtered.length,
             itemBuilder: (context, index) {
               final item = filtered[index];
-              final isDefault = defaultCategories.any((dc) => dc['title'] == item['title']);
+              final isDefault = defaultCategories.any(
+                (dc) => dc['title'] == item['title'],
+              );
               final Color iconColor = item['color'] ?? Colors.indigo;
 
               final cardContent = Padding(
@@ -267,15 +342,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       Expanded(
                         child: Text(
                           item["title"],
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                       ),
                       Icon(
                         Icons.arrow_forward_ios_rounded,
                         size: 16,
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.3),
                       ),
                     ],
                   ),
@@ -287,7 +363,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => CategoryDetailsScreen(categoryName: item["title"]),
+                      pageBuilder: (_, __, ___) =>
+                          CategoryDetailsScreen(categoryName: item["title"]),
                       transitionsBuilder: (_, animation, __, child) {
                         return FadeTransition(opacity: animation, child: child);
                       },
@@ -312,7 +389,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: const Icon(Icons.delete_outline_rounded, color: Colors.white, size: 28),
+                  child: const Icon(
+                    Icons.delete_outline_rounded,
+                    color: Colors.white,
+                    size: 28,
+                  ),
                 ),
                 onDismissed: (direction) {
                   _deleteCategory(item["title"]);
@@ -354,10 +435,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ),
         child: SafeArea(
-          child: IndexedStack(
-            index: _currentIndex,
-            children: pages,
-          ),
+          child: IndexedStack(index: _currentIndex, children: pages),
         ),
       ),
       bottomNavigationBar: Theme(
@@ -374,7 +452,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           },
           backgroundColor: Theme.of(context).colorScheme.surface,
           selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+          unselectedItemColor: Theme.of(
+            context,
+          ).colorScheme.onSurface.withOpacity(0.5),
           showSelectedLabels: true,
           showUnselectedLabels: true,
           elevation: 8,
@@ -397,4 +477,3 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 }
-
