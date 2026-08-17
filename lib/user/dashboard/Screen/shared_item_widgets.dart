@@ -141,7 +141,11 @@ class CustomFieldTile extends StatelessWidget {
   final CustomField field;
   final VoidCallback onDelete;
 
-  const CustomFieldTile({super.key, required this.field, required this.onDelete});
+  const CustomFieldTile({
+    super.key,
+    required this.field,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -183,9 +187,7 @@ class FileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isImg = isImage(
-      file.imageUrl.isNotEmpty ? file.imageUrl : file.name,
-    );
+    final isImg = isImage(file.imageUrl.isNotEmpty ? file.imageUrl : file.name);
     return Container(
       margin: const EdgeInsets.only(bottom: 12.0),
       decoration: BoxDecoration(
@@ -199,11 +201,7 @@ class FileTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () {
           if (isImg) {
-            showImagePreview(
-              context,
-              imageUrl: file.imageUrl,
-              name: file.name,
-            );
+            showImagePreview(context, imageUrl: file.imageUrl, name: file.name);
           } else {
             openRemoteFile(context, file.imageUrl, file.name);
           }
@@ -414,8 +412,7 @@ IconData getFileIcon(String pathOrUrl) {
     return Icons.slideshow_rounded;
   } else if (cleanPath.endsWith('.txt')) {
     return Icons.text_snippet_rounded;
-  } else if (cleanPath.endsWith('.zip') ||
-      cleanPath.endsWith('.tar')) {
+  } else if (cleanPath.endsWith('.zip') || cleanPath.endsWith('.tar')) {
     return Icons.folder_zip_rounded;
   }
   return Icons.insert_drive_file_rounded;
@@ -500,7 +497,9 @@ Future<void> extractArchive(BuildContext context, File file) async {
     } else if (extension == 'tar') {
       archive = TarDecoder().decodeBytes(bytes);
     } else {
-      throw Exception("Extraction is supported only for ZIP and TAR archives.");
+      throw Exception(
+        "Extraction is supported only for ZIP and TAR archives..",
+      );
     }
 
     final tempDir = await getTemporaryDirectory();
@@ -696,8 +695,7 @@ Future<void> processFileOpen(
 
   if (isImage(cleanPath)) {
     showImagePreview(context, file: File(localPath), name: fileName);
-  } else if (extension == 'zip' ||
-      extension == 'tar') {
+  } else if (extension == 'zip' || extension == 'tar') {
     await handleArchiveTap(context, File(localPath));
   } else {
     final result = await OpenFilex.open(localPath);
