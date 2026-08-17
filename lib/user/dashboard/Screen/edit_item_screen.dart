@@ -181,7 +181,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Entry Saved Successfully'),
+          content: Text('Entry Saved Successfully.'),
           backgroundColor: Colors.teal,
         ),
       );
