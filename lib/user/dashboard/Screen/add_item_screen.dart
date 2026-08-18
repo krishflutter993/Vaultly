@@ -87,7 +87,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   String _generatePassword() {
     const chars =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*.';
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
     final rng = Random.secure();
     return List.generate(16, (_) => chars[rng.nextInt(chars.length)]).join();
   }
