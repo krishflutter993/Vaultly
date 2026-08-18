@@ -13,10 +13,7 @@ import 'shared_item_widgets.dart';
 class AddItemScreen extends StatefulWidget {
   final String categoryName;
 
-  const AddItemScreen({
-    super.key,
-    required this.categoryName,
-  });
+  const AddItemScreen({super.key, required this.categoryName});
 
   @override
   State<AddItemScreen> createState() => _AddItemScreenState();
@@ -90,7 +87,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   String _generatePassword() {
     const chars =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*.';
     final rng = Random.secure();
     return List.generate(16, (_) => chars[rng.nextInt(chars.length)]).join();
   }
