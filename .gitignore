@@ -43,16 +43,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-# Sensitive files and secrets
-.env
-*.env
-*.env.*
-*secret*
-*key*
-*.keystore
-*.jks
-*.p12
-*.pfx
-*.pem
-*.der

@@ -126,7 +126,7 @@ class UrlTile extends StatelessWidget {
       controller: controller,
       keyboardType: TextInputType.url,
       decoration: InputDecoration(
-        labelText: 'Website URL',
+        labelText: 'Website URL.',
         prefixIcon: const Icon(Icons.link_rounded),
         suffixIcon: IconButton(
           icon: const Icon(Icons.clear_rounded),
